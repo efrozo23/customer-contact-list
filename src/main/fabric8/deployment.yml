@@ -7,6 +7,10 @@ spec:
               value: '{"server":{"undertow":{"io-threads":10, "worker-threads":20 }}}'
             - name: JAVA_OPTIONS
               value: '-Xms512m -Xmx1024m -Dfile.encoding=ISO-8859-1'
+          envFrom:
+            - configMapRef:
+                name: customer-contac-list-config
+
           readinessProbe:
             httpGet:
               path: /healthcheck
