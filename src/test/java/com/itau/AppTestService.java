@@ -45,7 +45,7 @@ public class AppTestService {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-	private final String URL = "http://localhost:8081/";
+	private final String URL = "http://localhost:8088/";
 
 	@Test
 	public void aatestGet400() throws Exception {

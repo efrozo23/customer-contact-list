@@ -47,7 +47,7 @@ public class ApplicationTest {
     
   
     
-    private final String URL = "http://localhost:8081/";
+    private final String URL = "http://localhost:8088/";
     
     private Logger logger = LoggerFactory.getLogger(ApplicationTest.class);
     
