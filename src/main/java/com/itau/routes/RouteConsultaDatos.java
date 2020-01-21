@@ -101,6 +101,7 @@ public class RouteConsultaDatos extends RouteBuilder{
 			.setHeader(Exchange.HTTP_URI, simple("{{servicio.url}}"))
 			.setHeader(Exchange.HTTP_METHOD, constant(HttpMethod.POST))
 			.to("http4:dummy?httpClient.connectTimeout={{servicio.connection.timeout}}&httpClient.socketTimeout={{servicio.connection.timeout}}&throwExceptionOnFailure=true")
+			.log(LoggingLevel.DEBUG, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Status respuesta de servicio  SOAP  ${headers.CamelHttpResponseCode}")
 			.log(LoggingLevel.DEBUG, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Finalizo consumo de servicio  SOAP  ${body}")
 			.convertBodyTo(String.class)
 			.end();

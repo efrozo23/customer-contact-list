@@ -33,6 +33,7 @@ public class RestDslMainRoute extends RouteBuilder {
     // @formatter:off
         restConfiguration()
             .component("servlet")
+            
             .bindingMode(RestBindingMode.json)
             .dataFormatProperty("prettyPrint", "true")
             .enableCORS(true)

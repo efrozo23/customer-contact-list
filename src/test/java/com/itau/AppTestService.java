@@ -53,7 +53,7 @@ public class AppTestService {
 		httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		httpHeaders.add("requestUUID", "123456");
 		httpHeaders.add("dateTime", "2019-12-30T18:33:12");
-		httpHeaders.add("originatorName", "BancaMovil - APP PN");
+		httpHeaders.add("originatorName", "	");
 		httpHeaders.add("originatorType", "47");
 		httpHeaders.add("terminalId", "127.0.0.1");
 
