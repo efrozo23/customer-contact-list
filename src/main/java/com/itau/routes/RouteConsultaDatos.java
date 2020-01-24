@@ -1,5 +1,7 @@
 package com.itau.routes;
 
+import java.nio.charset.StandardCharsets;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -83,7 +85,7 @@ public class RouteConsultaDatos extends RouteBuilder{
 					XmlMapper xmlMapper = new XmlMapper();
 					xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 					xmlMapper.setDefaultUseWrapper(false);
-					ResponseSOAP dto = xmlMapper.readValue(body.getBytes(), ResponseSOAP.class);
+					ResponseSOAP dto = xmlMapper.readValue(body.getBytes(StandardCharsets.UTF_8), ResponseSOAP.class);
 				    			
 					ObjectMapper objectMapper = new ObjectMapper();
 					String jsondto = objectMapper.writeValueAsString(dto);
