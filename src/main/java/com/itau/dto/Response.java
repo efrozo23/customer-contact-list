@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 
- * @author Assert Solutions S.A.S
+ * @author
  *
  */
 @XmlRootElement
