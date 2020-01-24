@@ -36,7 +36,7 @@ import com.itau.util.Constant;
 @Configuration
 @MockEndpoints("log:*")
 @UseAdviceWith
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = { "server.port=8081" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ApplicationTest {
 
     @Value("${server.port}")
@@ -47,7 +47,7 @@ public class ApplicationTest {
     
   
     
-    private final String URL = "http://localhost:8088/";
+    private final String URL = "http://localhost:";
     
     private Logger logger = LoggerFactory.getLogger(ApplicationTest.class);
     
@@ -79,7 +79,7 @@ public class ApplicationTest {
   		
   		
     	HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-    	ResponseEntity<String> response = restTemplate.exchange(URL + "GET/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056", HttpMethod.GET, httpEntity, String.class);
+    	ResponseEntity<String> response = restTemplate.exchange(URL + serverPort + "/GET/1_2345/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056", HttpMethod.GET, httpEntity, String.class);
     	logger.info("Response:{}", response.getBody());
     	assertThat(response.getStatusCodeValue()).isEqualByComparingTo(200);
     }
@@ -94,7 +94,8 @@ public class ApplicationTest {
     	httpHeaders.add("originatorType", "47");
     	httpHeaders.add("terminalId", "127.0.0.1");
     	HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-    	ResponseEntity<String> response = restTemplate.exchange(URL + "GET/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056", HttpMethod.GET, httpEntity, String.class);
+    	logger.info("path: {}",URL +serverPort+ "/GET/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056");
+    	ResponseEntity<String> response = restTemplate.exchange(URL + serverPort + "/GET/1_2345/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056", HttpMethod.GET, httpEntity, String.class);
     	logger.info("Response 422:{}", response.getBody());
     	assertThat(response.getStatusCodeValue()).isEqualByComparingTo(422);
     }
@@ -119,7 +120,7 @@ public class ApplicationTest {
         });
 
     	HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-    	ResponseEntity<String> response = restTemplate.exchange(URL + "GET/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056", HttpMethod.GET, httpEntity, String.class);
+    	ResponseEntity<String> response = restTemplate.exchange(URL + serverPort + "/GET/1_2345/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056", HttpMethod.GET, httpEntity, String.class);
     	logger.info("Response:{}", response.getBody());
 
     	assertThat(response.getStatusCodeValue()).isEqualByComparingTo(422);

@@ -2,6 +2,7 @@ package com.itau.routes;
 
 import java.nio.charset.StandardCharsets;
 
+import org.apache.camel.CamelException;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -60,7 +61,7 @@ public class RouteConsultaDatos extends RouteBuilder{
 		 		.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(422))
 				.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.APPLICATION_JSON_UTF8))
 		 	.end()
-		    .onException(Exception.class)
+		    .onException(CamelException.class)
 		 		.handled(true)
 		 		.log(LoggingLevel.ERROR, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Encontro una exception general: ${exception.message}")
 		 		.bean(ResponseHandler.class)
@@ -70,8 +71,21 @@ public class RouteConsultaDatos extends RouteBuilder{
 		 		.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
 				.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.APPLICATION_JSON_UTF8))
 		 	.end()
+		 	.onException(Exception.class)
+				.handled(true)
+				.log(LoggingLevel.ERROR, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Encontro una exception HttpException: ${exception.message}")
+				.setBody(simple("{\"error\":\"Error interno\",\"message\": \"${exception.message}\"}"))
+				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(500))
+				.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.APPLICATION_JSON_UTF8))
+			.end()
 		 	.setProperty(Constant.PROCESO_ID, simple("${exchangeId}"))
 		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Inicio la ruta de Consulta de datos")
+		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Datos recividos ${headers.id_cedula}")
+		 	.process(e->{
+		 		String[] dataClient = e.getIn().getHeader("id_cedula", String.class).split("_");
+		 		e.getIn().setHeader("issuedIdentType", dataClient[0]);
+		 		e.getIn().setHeader("issuedIdentValue", dataClient[1]);
+		 	})
 		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Headers recividos  ${headers}")
 		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Inicio a cargar el template")
 		 	.to("velocity:templates/request.vm?propertiesFile=velocity.properties")
@@ -117,7 +131,7 @@ public class RouteConsultaDatos extends RouteBuilder{
 					.setProperty(Constant.RESPONSE_STATUS).jsonpath("$.Body.getCustomerContactListRs.*.Status")
 					.setProperty(Constant.RESPONSE_TRNINFOLIST).jsonpath("$.Body.getCustomerContactListRs.*.*.TrnInfoList.TrnInfo")
 					.log(LoggingLevel.DEBUG, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Busqueda ${exchangeProperty.responseStatus}")
-					.throwException(Exception.class, "Error en info")
+					.throwException(CamelException.class, "Error en info")
 					.endChoice()
 					.end()
 			.log(LoggingLevel.DEBUG, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: No se encontro código de error")

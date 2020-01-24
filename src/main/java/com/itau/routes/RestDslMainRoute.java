@@ -53,12 +53,6 @@ public class RestDslMainRoute extends RouteBuilder {
             .route().from("direct:health").setBody(constant("OK")).endRest()
         .get(env.getProperty("endpoint.get.customer.list")).description(env.getProperty("api.description.get.customer.list"))
         	.outType(String.class)
-        	.param().name("issuedIdentType").description("Valor de Tipo Documento").dataType("int").defaultValue("false")
-        	.required(true)
-        	.endParam()
-        	.param().name("issuedIdentValue").description("Valor documento cliente").dataType("int").defaultValue("false")
-        	.required(true)
-        	.endParam()
         	.to(Constant.ROUTE_CONSULTA_DATOS);
        
         

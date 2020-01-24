@@ -31,7 +31,7 @@ import com.itau.util.Constant;
 @Configuration
 @MockEndpoints("log:*")
 @UseAdviceWith
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = { "server.port=8081" })
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class AppTestService {
 
 	@BeanInject
@@ -70,7 +70,7 @@ public class AppTestService {
 
 		HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
 		ResponseEntity<String> response = restTemplate.exchange(
-				URL + "GET/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056",
+				URL + "GET/1_123124/customers/v1/customers/getCustomerContactList?issuedIdentType=1&issuedIdentValue=1056",
 				HttpMethod.GET, httpEntity, String.class);
 		logger.info("Response:{}", response.getBody());
 
