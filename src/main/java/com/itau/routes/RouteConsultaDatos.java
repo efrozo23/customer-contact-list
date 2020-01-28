@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.itau.beans.ResponseHandler;
@@ -137,7 +138,8 @@ public class RouteConsultaDatos extends RouteBuilder{
 			.log(LoggingLevel.DEBUG, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: No se encontro código de error")
 			.setProperty(Constant.RESPONSE_TRNINFOLIST).jsonpath("$.Body.getCustomerContactListRs.*.*.TrnInfoList.TrnInfo")
 			.setProperty(Constant.RESPONSE_STATUS).jsonpath("$.Body.getCustomerContactListRs.*.Status")
-			.setProperty(Constant.RESPONSE_LIST_CONTACTS).jsonpath("$.Body.getCustomerContactListRs.*.Contact")
+			.setProperty(Constant.RESPONSE_LIST_CONTACTS).jsonpath("$.Body.getCustomerContactListRs.*.Contact[*]")
+			.log(LoggingLevel.DEBUG, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: ${exchangeProperty.responseStatus[0]}")
 			.bean(ResponseHandler.class, "responseOK")
 			.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
 			.setHeader(Exchange.CONTENT_TYPE, constant(MediaType.APPLICATION_JSON_UTF8))
