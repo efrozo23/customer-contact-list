@@ -83,8 +83,8 @@ public class RouteConsultaDatos extends RouteBuilder{
 		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Datos recividos ${headers.id_cedula}")
 		 	.process(e->{
 		 		String[] dataClient = e.getIn().getHeader("id_cedula", String.class).split("_");
-		 		e.getIn().setHeader("issuedIdentType", dataClient[0]);
-		 		e.getIn().setHeader("issuedIdentValue", dataClient[1]);
+		 		e.getIn().setHeader("issuedIdentType", dataClient[1]);
+		 		e.getIn().setHeader("issuedIdentValue", dataClient[0]);
 		 	})
 		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Headers recividos  ${headers}")
 		 	.log(LoggingLevel.INFO, logger, "Proceso: ${exchangeProperty.procesoId} | Mensaje: Inicio a cargar el template")
