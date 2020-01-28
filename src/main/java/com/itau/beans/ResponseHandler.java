@@ -5,6 +5,7 @@ import org.apache.camel.Handler;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.itau.dto.Response;
 import com.itau.dto.ResponseList;
 import com.itau.exception.MyException;
@@ -24,6 +25,7 @@ public class ResponseHandler {
 		try {
 			dto.status = mapper.readTree(e.getProperty(Constant.RESPONSE_STATUS, String.class));
 			dto.trnInfoList = mapper.readTree(e.getProperty(Constant.RESPONSE_TRNINFOLIST, String.class));
+			dto.status = dto.status.get(0) == null ? JsonNodeFactory.instance.objectNode() : dto.status.get(0);
 		} catch (Exception e2) {
 			throw new MyException(e2);
 		}
@@ -39,6 +41,7 @@ public class ResponseHandler {
 			dto.status = mapper.readTree(e.getProperty(Constant.RESPONSE_STATUS, String.class));
 			dto.trnInfoList = mapper.readTree(e.getProperty(Constant.RESPONSE_TRNINFOLIST, String.class));
 			dto.listContacts = mapper.readTree(e.getProperty(Constant.RESPONSE_LIST_CONTACTS, String.class));
+			dto.status = dto.status.get(0) == null ? JsonNodeFactory.instance.objectNode() : dto.status.get(0);
 		} catch (Exception e2) {
 			throw new MyException(e2);
 		}
